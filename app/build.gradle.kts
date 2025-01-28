@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
+    implementation(libs.logging.interceptor)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
