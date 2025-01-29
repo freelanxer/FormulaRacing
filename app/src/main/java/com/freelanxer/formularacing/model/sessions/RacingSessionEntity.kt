@@ -6,5 +6,5 @@ package com.freelanxer.formularacing.model.sessions
  * (practice, qualifying, sprint, race, ...).
  */
 data class RacingSessionResponseEntity(
-    val sessionList: ArrayList<RacingSession>
+    val sessionList: List<RacingSession>? = null
 )
