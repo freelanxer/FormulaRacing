@@ -3,6 +3,7 @@ package com.freelanxer.formularacing
 import android.app.Application
 import com.freelanxer.formularacing.di.OpenF1ServiceModule
 import com.freelanxer.formularacing.di.RepositoryModule
+import com.freelanxer.formularacing.di.ViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -18,7 +19,8 @@ class FormulaRacingApplication : Application() {
             androidContext(this@FormulaRacingApplication)
             modules(
                 OpenF1ServiceModule() +
-                        RepositoryModule()
+                        RepositoryModule() +
+                        ViewModelModule()
             )
         }
     }
