@@ -58,6 +58,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Custom
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
