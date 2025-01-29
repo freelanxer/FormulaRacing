@@ -4,6 +4,7 @@ import com.freelanxer.formularacing.model.sessions.RacingSession
 
 interface OpenF1Api {
     suspend fun queryRacingSessions(
-        year: Int? = null
+        sessionKey: Int? = null,
+        year: Int? = null,
     ): Result<List<RacingSession>>
 }

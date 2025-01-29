@@ -7,6 +7,7 @@ import retrofit2.http.Query
 interface OpenF1ApiService {
     @GET("sessions")
     suspend fun requestRacingSessions(
-        @Query("year") year: Int? = null
+        @Query("session_key") sessionKey: Int? = null,
+        @Query("year") year: Int? = null,
     ): List<RacingSession>
 }

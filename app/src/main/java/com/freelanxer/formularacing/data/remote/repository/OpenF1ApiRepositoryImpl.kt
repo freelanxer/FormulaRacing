@@ -12,9 +12,12 @@ class OpenF1ApiRepositoryImpl(
     private val api: OpenF1Api
 ) : OpenF1ApiRepository {
 
-    override suspend fun queryRacingSessions(year: Int?): Flow<ApiResult<RacingSessionResponseEntity>> {
+    override suspend fun queryRacingSessions(
+        sessionKey: Int?,
+        year: Int?
+    ): Flow<ApiResult<RacingSessionResponseEntity>> {
         val apiResult = withContext(Dispatchers.IO) {
-            api.queryRacingSessions(year).fold(
+            api.queryRacingSessions(sessionKey, year).fold(
                 onSuccess = {
                     ApiResult.Success(result = RacingSessionResponseEntity(sessionList = it))
                 },

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface OpenF1ApiRepository {
 
     suspend fun queryRacingSessions(
+        sessionKey: Int? = null,
         year: Int? = null
     ): Flow<ApiResult<RacingSessionResponseEntity>>
 

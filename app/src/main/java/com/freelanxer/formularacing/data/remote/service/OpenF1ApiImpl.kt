@@ -13,11 +13,17 @@ class OpenF1ApiImpl(
         retrofitProvider.invoke().create(OpenF1ApiService::class.java)
     }
 
-    override suspend fun queryRacingSessions(year: Int?): Result<List<RacingSession>> {
+    override suspend fun queryRacingSessions(
+        sessionKey: Int?,
+        year: Int?
+    ): Result<List<RacingSession>> {
         return withContext(Dispatchers.Default) {
             kotlin.runCatching {
                 withContext(Dispatchers.IO) {
-                    service.requestRacingSessions(year)
+                    service.requestRacingSessions(
+                        sessionKey = sessionKey,
+                        year = year,
+                    )
                 }
             }
         }
