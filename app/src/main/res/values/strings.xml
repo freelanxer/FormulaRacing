@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">FormulaRacing</string>
+
+    <string name="screen_home">Formula Racing</string>
+    <string name="grand_prix">Grand Prix</string>
 </resources>
