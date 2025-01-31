@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,8 +33,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.freelanxer.formularacing.R
 import com.freelanxer.formularacing.extension.DateFormatPattern
 import com.freelanxer.formularacing.extension.dateFormat
 import com.freelanxer.formularacing.model.sessions.RacingSession
@@ -68,65 +71,79 @@ fun MeetingItemView(
             .clickable { onClicked.invoke(meeting) },
         colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .defaultMinSize(minHeight = 100.dp)
-                .padding(top = 16.dp, bottom = 0.dp, start = 16.dp, end = 16.dp),
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
             val circuit = CircuitType.fromCircuitKey(meeting.circuitKey!!)
-            circuit?.let {
-                Image(
-                    modifier = Modifier.align(Alignment.TopEnd),
-                    painter = painterResource(it.iconResId),
-                    contentDescription = "Circuit"
-                )
-            }
-
-            Column(
+            val background = circuit?.backgroundResId ?: R.drawable.bg_uae_70
+            Image(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.TopCenter)
+                    .height(130.dp),
+                contentScale = ContentScale.Crop,
+                painter = painterResource(background),
+                contentDescription = "Circuit background"
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 100.dp)
+                    .padding(top = 16.dp, bottom = 0.dp, start = 16.dp, end = 16.dp),
             ) {
-                Text(
-                    text = meeting.meetingName ?: "",
-                    style = RacingTextTitle
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text(
-                        text = meeting.year.toString(),
-                        style = RacingTextSecondTitle
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = meeting.locationName ?: "",
-                        style = RacingTextSecondTitle
+                // Circuit icon
+                circuit?.let {
+                    Image(
+                        modifier = Modifier.align(Alignment.TopEnd),
+                        painter = painterResource(it.iconResId),
+                        contentDescription = "Circuit"
                     )
                 }
 
-                AnimatedVisibility(visible = isExpand) {
-                    Column {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        meeting.sessionList?.forEach {
-                            SessionDataTimeView(it)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter)
+                ) {
+                    Text(
+                        text = meeting.meetingName ?: "",
+                        style = RacingTextTitle
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = meeting.year.toString(),
+                            style = RacingTextSecondTitle
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = meeting.locationName ?: "",
+                            style = RacingTextSecondTitle
+                        )
+                    }
+
+                    AnimatedVisibility(visible = isExpand) {
+                        Column {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            meeting.sessionList?.forEach {
+                                SessionDataTimeView(it)
+                            }
                         }
                     }
-                }
 
-                IconButton(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    onClick = {
-                        isExpand = !isExpand
+                    IconButton(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        onClick = {
+                            isExpand = !isExpand
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.rotate(rotateAngle),
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Expandable arrow"
+                        )
                     }
-                ) {
-                    Icon(
-                        modifier = Modifier.rotate(rotateAngle),
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Expandable arrow"
-                    )
                 }
             }
         }

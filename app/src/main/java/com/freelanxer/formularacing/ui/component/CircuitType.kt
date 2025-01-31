@@ -33,7 +33,6 @@ sealed class CircuitType(
     data object KSA_149 : CircuitType(countryCode = "KSA", circuitKey = 149, iconResId = R.drawable.ic_circuit_ksa_149, backgroundResId = R.drawable.bg_ksa_149)
     data object BRN_63 : CircuitType(countryCode = "BRN", circuitKey = 63, iconResId = R.drawable.ic_circuit_brn_63, backgroundResId = R.drawable.bg_brn_63)
 
-
     companion object {
         private val values = listOf(
             UAE_70,
