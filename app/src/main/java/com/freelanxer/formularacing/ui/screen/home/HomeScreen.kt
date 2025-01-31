@@ -1,6 +1,7 @@
 package com.freelanxer.formularacing.ui.screen.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -25,6 +28,8 @@ import androidx.navigation.NavController
 import com.freelanxer.formularacing.R
 import com.freelanxer.formularacing.ui.component.MeetingItemView
 import com.freelanxer.formularacing.ui.component.RacingAppBar
+import com.freelanxer.formularacing.ui.component.TeamItemView
+import com.freelanxer.formularacing.ui.component.TeamType
 import com.freelanxer.formularacing.ui.theme.RacingTextTitle
 import com.freelanxer.formularacing.ui.theme.ScreenCommonBackground
 import org.koin.androidx.compose.koinViewModel
@@ -45,29 +50,42 @@ fun HomeScreen(
                 .padding(paddingValues)
                 .background(ScreenCommonBackground)
         ) {
-            MeetingOverview()
+            RacingOverview()
         }
     }
 }
 
 @Composable
-fun MeetingOverview(
+fun RacingOverview(
     viewModel: HomeViewModel = koinViewModel()
 ) {
     val meetingList = viewModel.meetingList.collectAsState().value
-
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .padding(top = 16.dp, start = 20.dp, end = 20.dp)
+            .padding(top = 16.dp)
             .fillMaxWidth()
     ) {
-        OverviewTitle(
-            title = stringResource(R.string.racing_sessions),
-            icon = Icons.Default.DateRange
-        )
-
-        LazyColumn {
-            itemsIndexed(meetingList) { index, item ->
+        item {
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                OverviewTitle(
+                    title = stringResource(R.string.teams),
+                    icon = Icons.Default.Check
+                )
+            }
+        }
+        item {
+            TeamsOverview()
+        }
+        item {
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                OverviewTitle(
+                    title = stringResource(R.string.racing_sessions),
+                    icon = Icons.Default.DateRange
+                )
+            }
+        }
+        itemsIndexed(meetingList) { index, item ->
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                 MeetingItemView(
                     meeting = item,
                     isFirstItem = index == 0
@@ -77,7 +95,25 @@ fun MeetingOverview(
             }
         }
     }
+}
 
+@Composable
+fun TeamsOverview() {
+    LazyRow(
+        modifier = Modifier.padding(
+            top = 16.dp,
+            bottom = 24.dp
+        )
+    ) {
+        itemsIndexed(TeamType.teams) { index, item ->
+            TeamItemView(
+                team = item,
+                isFirstItem = index == 0
+            ) {
+
+            }
+        }
+    }
 }
 
 @Composable
