@@ -1,13 +1,12 @@
 package com.freelanxer.formularacing.ui.screen.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,117 +22,111 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.freelanxer.formularacing.R
+import com.freelanxer.formularacing.ui.component.HorizontalSpacer
 import com.freelanxer.formularacing.ui.component.MeetingItemView
 import com.freelanxer.formularacing.ui.component.RacingAppBar
 import com.freelanxer.formularacing.ui.component.TeamItemView
 import com.freelanxer.formularacing.ui.component.TeamType
+import com.freelanxer.formularacing.ui.component.VerticalSpacer
 import com.freelanxer.formularacing.ui.theme.RacingTextTitle
-import com.freelanxer.formularacing.ui.theme.ScreenCommonBackground
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: HomeViewModel = koinViewModel()
 ) {
+    val meetingList = viewModel.meetingList.collectAsState().value
+    val teamList = TeamType.teams
+
     Scaffold(
+        modifier = modifier,
         topBar = {
             RacingAppBar(
                 title = stringResource(R.string.screen_home),
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
                 .padding(paddingValues)
-                .background(ScreenCommonBackground)
         ) {
-            RacingOverview()
-        }
-    }
-}
-
-@Composable
-fun RacingOverview(
-    viewModel: HomeViewModel = koinViewModel()
-) {
-    val meetingList = viewModel.meetingList.collectAsState().value
-    LazyColumn(
-        modifier = Modifier
-            .padding(top = 16.dp)
-            .fillMaxWidth()
-    ) {
-        item {
-            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                OverviewTitle(
-                    title = stringResource(R.string.teams),
+            item { VerticalSpacer(16.dp) }
+            item {
+                IconTitle(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    text = stringResource(R.string.teams),
                     icon = Icons.Default.Check
                 )
+                VerticalSpacer(16.dp)
+                LazyRow(modifier = modifier.fillMaxWidth()) {
+                    itemsIndexed(teamList) { index, item ->
+                        TeamItemView(
+                            team = item,
+                            isFirstItem = index == 0
+                        )
+                    }
+                }
+                VerticalSpacer(24.dp)
             }
-        }
-        item {
-            TeamsOverview()
-        }
-        item {
-            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                OverviewTitle(
-                    title = stringResource(R.string.racing_sessions),
+            item {
+                IconTitle(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    text = stringResource(R.string.racing_sessions),
                     icon = Icons.Default.DateRange
                 )
             }
-        }
-        itemsIndexed(meetingList) { index, item ->
-            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+            itemsIndexed(meetingList) { index, item ->
                 MeetingItemView(
+                    modifier = Modifier.padding(horizontal = 20.dp),
                     meeting = item,
                     isFirstItem = index == 0
-                ) {
-
-                }
+                )
             }
         }
     }
 }
 
 @Composable
-fun TeamsOverview() {
-    LazyRow(
-        modifier = Modifier.padding(
-            top = 16.dp,
-            bottom = 24.dp
-        )
-    ) {
-        itemsIndexed(TeamType.teams) { index, item ->
-            TeamItemView(
-                team = item,
-                isFirstItem = index == 0
-            ) {
-
-            }
-        }
-    }
-}
-
-@Composable
-fun OverviewTitle(
-    title: String,
-    icon: ImageVector? = null
+fun IconTitle(
+    modifier: Modifier = Modifier,
+    text: String,
+    icon: ImageVector? = null,
 ) {
     Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         icon?.let {
             Icon(
-                imageVector = icon,
+                modifier = Modifier.size(24.dp),
+                imageVector = it,
                 contentDescription = "Title icon"
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            HorizontalSpacer(8.dp)
         }
         Text(
-            text = title,
+            text = text,
             style = RacingTextTitle
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFAFAFA)
+@Composable
+private fun IconTitlePreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        IconTitle(
+            text = "Overview",
+            icon = Icons.Default.DateRange
         )
     }
 }

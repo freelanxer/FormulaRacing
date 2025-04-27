@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.CardDefaults
@@ -35,8 +32,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.freelanxer.formularacing.R
+import com.freelanxer.formularacing.dsl.Invoke
 import com.freelanxer.formularacing.extension.DateFormatPattern
 import com.freelanxer.formularacing.extension.dateFormat
 import com.freelanxer.formularacing.model.sessions.RacingSession
@@ -47,9 +46,10 @@ import com.freelanxer.formularacing.ui.theme.RacingTextTitle
 
 @Composable
 fun MeetingItemView(
+    modifier: Modifier = Modifier,
     meeting: SessionMeeting,
     isFirstItem: Boolean = false,
-    onClicked: (SessionMeeting) -> Unit = {},
+    onClicked: Invoke? = null
 ) {
     var isExpand by rememberSaveable { mutableStateOf(false) }
     val rotateAngle by animateFloatAsState(
@@ -58,7 +58,7 @@ fun MeetingItemView(
     )
 
     ElevatedCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(
                 top = if (isFirstItem) 16.dp else 0.dp,
@@ -68,11 +68,11 @@ fun MeetingItemView(
                 elevation = 5.dp,
                 shape = MaterialTheme.shapes.large
             )
-            .clickable { onClicked.invoke(meeting) },
+            .clickable { onClicked?.invoke() },
         colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxWidth()
         ) {
             val circuit = CircuitType.fromCircuitKey(meeting.circuitKey!!)
             val background = circuit?.backgroundResId ?: R.drawable.bg_uae_70
@@ -108,7 +108,7 @@ fun MeetingItemView(
                         text = meeting.meetingName ?: "",
                         style = RacingTextTitle
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    VerticalSpacer(8.dp)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
@@ -116,7 +116,7 @@ fun MeetingItemView(
                             text = meeting.year.toString(),
                             style = RacingTextSecondTitle
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        HorizontalSpacer(8.dp)
                         Text(
                             text = meeting.locationName ?: "",
                             style = RacingTextSecondTitle
@@ -125,9 +125,9 @@ fun MeetingItemView(
 
                     AnimatedVisibility(visible = isExpand) {
                         Column {
-                            Spacer(modifier = Modifier.height(16.dp))
+                            VerticalSpacer(16.dp)
                             meeting.sessionList?.forEach {
-                                SessionDataTimeView(it)
+                                SessionDataTimeView(session = it)
                             }
                         }
                     }
@@ -152,20 +152,49 @@ fun MeetingItemView(
 
 @Composable
 fun SessionDataTimeView(
+    modifier: Modifier = Modifier,
     session: RacingSession,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = session.sessionName,
+            text = session.sessionName.orEmpty(),
             style = RacingTextContentTitle
         )
         Text(
-            text = session.dateStart.dateFormat(
+            text = session.dateStart?.dateFormat(
                 inputFormat = DateFormatPattern.UTC_ISO_8601,
                 outputFormat = DateFormatPattern.MMDDHHMM
+            ).orEmpty()
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFAFAFA)
+@Composable
+fun MeetingItemViewPreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        MeetingItemView(
+            meeting = SessionMeeting(
+                meetingName = "Bahrain Grand Prix",
+                locationName = "Bahrain",
+                circuitKey = 63,
+                year = 2025,
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFAFAFA)
+@Composable
+fun SessionDataTimeViewPreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        SessionDataTimeView(
+            session = RacingSession(
+                sessionName = "Practice 1",
+                dateStart = "2025-09-15T13:35:41.808000+00:00"
             )
         )
     }

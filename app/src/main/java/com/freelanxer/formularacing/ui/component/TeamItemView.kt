@@ -19,14 +19,16 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.freelanxer.formularacing.dsl.Invoke
 
 @Composable
 fun TeamItemView(
     team: TeamType = TeamType.RB,
     isFirstItem: Boolean = false,
-    onClicked: (TeamType) -> Unit = {}
+    onClicked: Invoke? = null,
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -39,7 +41,7 @@ fun TeamItemView(
                 elevation = 5.dp,
                 shape = MaterialTheme.shapes.large
             )
-            .clickable { onClicked.invoke(team) },
+            .clickable { onClicked?.invoke() },
         colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
     ) {
         Column(
@@ -60,4 +62,13 @@ fun TeamItemView(
             )
         }
     }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFAFAFA)
+@Composable
+fun TeamItemViewPreview() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        TeamItemView(isFirstItem = true)
+    }
+
 }
