@@ -1,6 +1,5 @@
 package com.freelanxer.formularacing.data.remote.repository
 
-import com.freelanxer.formularacing.data.remote.ApiResult
 import com.freelanxer.formularacing.data.remote.service.OpenF1Api
 import com.freelanxer.formularacing.model.sessions.RacingSessionResponseEntity
 import kotlinx.coroutines.Dispatchers
@@ -15,14 +14,14 @@ class OpenF1ApiRepositoryImpl(
     override suspend fun queryRacingSessions(
         sessionKey: Int?,
         year: Int?
-    ): Flow<ApiResult<RacingSessionResponseEntity>> {
+    ): Flow<Result<RacingSessionResponseEntity>> {
         val apiResult = withContext(Dispatchers.IO) {
             api.queryRacingSessions(sessionKey, year).fold(
                 onSuccess = {
-                    ApiResult.Success(result = RacingSessionResponseEntity(sessionList = it))
+                    Result.success(RacingSessionResponseEntity(it))
                 },
                 onFailure = {
-                    ApiResult.Fail(exception = it)
+                    Result.failure(it)
                 }
             )
         }

@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.freelanxer.formularacing.R
-import com.freelanxer.formularacing.data.remote.ApiResult
 import com.freelanxer.formularacing.data.remote.repository.OpenF1ApiRepository
 import com.freelanxer.formularacing.model.sessions.SessionMeeting
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,29 +26,25 @@ class HomeViewModel(
     private fun requestSessions() {
         viewModelScope.launch {
             openF1ApiRepository.queryRacingSessions().collect { result ->
-                when (result) {
-                    is ApiResult.Success -> {
-                        val sessionList = result.data?.sessionList?.reversed() ?: emptyList()
-                        val meetingList = sessionList.groupBy { it.meetingKey }
-                            .map { (meetingKey, sessions) ->
-                                val firstSession = sessions.first()
-                                SessionMeeting(
-                                    meetingKey = meetingKey,
-                                    meetingName = "${firstSession.countryName} ${context.getString(
-                                        R.string.grand_prix)}",
-                                    locationName = firstSession.location,
-                                    countryCode = firstSession.countryCode,
-                                    year = firstSession.year,
-                                    circuitKey = firstSession.circuitKey,
-                                    sessionList = sessions.reversed()
-                                )
-                            }
-                        _meetingList.update { meetingList }
-                    }
+                result.onSuccess { entity ->
+                    val sessionList = entity.sessionList?.reversed() ?: emptyList()
+                    val meetingList = sessionList.groupBy { it.meetingKey }
+                        .map { (meetingKey, sessions) ->
+                            val firstSession = sessions.first()
+                            SessionMeeting(
+                                meetingKey = meetingKey,
+                                meetingName = "${firstSession.countryName} ${context.getString(
+                                    R.string.grand_prix)}",
+                                locationName = firstSession.location,
+                                countryCode = firstSession.countryCode,
+                                year = firstSession.year,
+                                circuitKey = firstSession.circuitKey,
+                                sessionList = sessions.reversed()
+                            )
+                        }
+                    _meetingList.update { meetingList }
+                }.onFailure {
 
-                    is ApiResult.Fail -> {
-
-                    }
                 }
             }
         }
