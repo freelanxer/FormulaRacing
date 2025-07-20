@@ -53,7 +53,7 @@ fun HomeScreen(
         }
     ) { paddingValues ->
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
@@ -65,7 +65,7 @@ fun HomeScreen(
                     icon = Icons.Default.Check
                 )
                 VerticalSpacer(16.dp)
-                LazyRow(modifier = modifier.fillMaxWidth()) {
+                LazyRow(modifier = Modifier.fillMaxWidth()) {
                     itemsIndexed(teamList) { index, item ->
                         TeamItemView(
                             team = item,
