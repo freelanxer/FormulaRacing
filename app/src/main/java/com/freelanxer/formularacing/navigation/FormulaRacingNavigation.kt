@@ -16,15 +16,16 @@ fun FormulaRacingNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = FormulaRacingScreens.HomeScreen.route
+        startDestination = RouteHome
     ) {
-        composable(route = FormulaRacingScreens.HomeScreen.route) {
+        composable<RouteHome> {
             HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(ScreenCommonBackground),
-                navController = navController
-            )
+                    .background(ScreenCommonBackground)
+            ) { meetingKey ->
+
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.freelanxer.formularacing.navigation
 
-sealed class FormulaRacingScreens(
-    val route: String
-) {
-    data object HomeScreen : FormulaRacingScreens(route = "home")
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+object RouteHome
+
+@Serializable
+data class RouteSession(val id: String)

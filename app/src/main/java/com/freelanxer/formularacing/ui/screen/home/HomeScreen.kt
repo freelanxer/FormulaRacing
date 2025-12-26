@@ -26,6 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.freelanxer.formularacing.R
+import com.freelanxer.formularacing.dsl.Action
+import com.freelanxer.formularacing.dsl.Invoke
 import com.freelanxer.formularacing.ui.component.HorizontalSpacer
 import com.freelanxer.formularacing.ui.component.MeetingItemView
 import com.freelanxer.formularacing.ui.component.RacingAppBar
@@ -38,8 +40,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    viewModel: HomeViewModel = koinViewModel()
+    viewModel: HomeViewModel = koinViewModel(),
+    sessionClicked: Action<Int>,
 ) {
     val meetingList = viewModel.meetingList.collectAsState().value
     val teamList = TeamType.teams
@@ -87,7 +89,11 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     meeting = item,
                     isFirstItem = index == 0
-                )
+                ) {
+                    item.meetingKey?.let {
+                        sessionClicked.invoke(it)
+                    }
+                }
             }
         }
     }
