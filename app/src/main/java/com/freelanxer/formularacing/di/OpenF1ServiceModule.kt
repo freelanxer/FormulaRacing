@@ -1,7 +1,6 @@
 package com.freelanxer.formularacing.di
 
-import com.freelanxer.formularacing.data.remote.service.OpenF1Api
-import com.freelanxer.formularacing.data.remote.service.OpenF1ApiImpl
+import com.freelanxer.formularacing.data.remote.service.OpenF1ApiService
 import com.freelanxer.formularacing.network.RetrofitProvider
 import com.freelanxer.formularacing.network.RetrofitProviderImpl
 import org.koin.core.module.Module
@@ -14,7 +13,7 @@ object OpenF1ServiceModule {
         val module =
             module {
                 singleOf(::RetrofitProviderImpl).bind<RetrofitProvider>()
-                singleOf(::OpenF1ApiImpl).bind<OpenF1Api>()
+                single { get<RetrofitProvider>().invoke().create(OpenF1ApiService::class.java) }
             }
         return listOf(module) + overrideModules
     }

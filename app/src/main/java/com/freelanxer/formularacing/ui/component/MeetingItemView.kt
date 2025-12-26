@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.freelanxer.formularacing.R
@@ -105,7 +106,7 @@ fun MeetingItemView(
                         .align(Alignment.TopCenter)
                 ) {
                     Text(
-                        text = meeting.meetingName ?: "",
+                        text = "${meeting.meetingName} ${stringResource(R.string.grand_prix)}",
                         style = RacingTextTitle
                     )
                     VerticalSpacer(8.dp)
