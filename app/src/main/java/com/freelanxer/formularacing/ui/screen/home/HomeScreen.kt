@@ -1,5 +1,6 @@
 package com.freelanxer.formularacing.ui.screen.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,8 @@ import com.freelanxer.formularacing.ui.component.RacingAppBar
 import com.freelanxer.formularacing.ui.component.TeamItemView
 import com.freelanxer.formularacing.ui.component.TeamType
 import com.freelanxer.formularacing.ui.component.VerticalSpacer
+import com.freelanxer.formularacing.ui.theme.Color1C1B1F
+import com.freelanxer.formularacing.ui.theme.ColorFAFAFA
 import com.freelanxer.formularacing.ui.theme.RacingTextTitle
 import org.koin.androidx.compose.koinViewModel
 
@@ -57,6 +60,7 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(color = ColorFAFAFA)
                 .padding(paddingValues)
         ) {
             item { VerticalSpacer(16.dp) }
@@ -115,6 +119,7 @@ fun IconTitle(
             Icon(
                 modifier = Modifier.size(24.dp),
                 imageVector = it,
+                tint = Color1C1B1F,
                 contentDescription = "Title icon"
             )
             HorizontalSpacer(8.dp)

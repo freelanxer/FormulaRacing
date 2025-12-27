@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.freelanxer.formularacing.ui.screen.home.HomeScreen
-import com.freelanxer.formularacing.ui.theme.ScreenCommonBackground
+import com.freelanxer.formularacing.ui.theme.ColorFAFAFA
 
 @Composable
 fun FormulaRacingNavigation() {
@@ -22,7 +22,7 @@ fun FormulaRacingNavigation() {
             HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(ScreenCommonBackground)
+                    .background(ColorFAFAFA)
             ) { meetingKey ->
 
             }

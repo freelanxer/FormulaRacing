@@ -168,7 +168,8 @@ fun SessionDataTimeView(
             text = session.dateStart?.dateFormat(
                 inputFormat = DateFormatPattern.UTC_ISO_8601,
                 outputFormat = DateFormatPattern.MMDDHHMM
-            ).orEmpty()
+            ).orEmpty(),
+            style = RacingTextContentTitle
         )
     }
 }

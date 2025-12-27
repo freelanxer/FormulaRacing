@@ -18,13 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.freelanxer.formularacing.ui.theme.DarkRed
+import com.freelanxer.formularacing.ui.theme.ColorA6051A
 
 @Preview(showBackground = true)
 @Composable
 fun RacingAppBar(
     title: String = "Title",
-    backgroundColor: Color = DarkRed,
+    backgroundColor: Color = ColorA6051A,
     navIcon: ImageVector? = null,
     onNavIconClicked: () -> Unit = {}
 ) {
@@ -35,7 +35,7 @@ fun RacingAppBar(
             .statusBarsPadding()
     ) {
         TopAppBar(
-            backgroundColor = DarkRed,
+            backgroundColor = ColorA6051A,
             modifier = Modifier
                 .windowInsetsPadding(WindowInsets.statusBars),
             elevation = 0.dp,
