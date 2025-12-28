@@ -18,6 +18,9 @@ koin-android = "4.0.0"
 koin-compose = "4.0.0"
 coil = "2.7.0"
 navigationCompose = "2.8.5"
+# firebase
+google-service = "4.4.4"
+firebaseBom = "34.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,10 +49,13 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+# Firebase
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" } # Changed to use Kotlin version
-
+google-service = { id = "com.google.gms.google-services", version.ref = "google-service"}
