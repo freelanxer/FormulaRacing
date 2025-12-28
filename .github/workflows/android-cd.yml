@@ -32,8 +32,8 @@ jobs:
       run: ./gradlew assembleRelease
 
     - name: Upload to Firebase App Distribution
-      uses: wzieba/firebase-app-distribution@v1
+      uses: codewithshihab/firebase-app-distribution-action@v1.4.0
       with:
-        appId: ${{ secrets.FIREBASE_APP_ID }}
-        token: ${{ secrets.FIREBASE_TOKEN }}
-        file: app/build/outputs/apk/release/app-release.apk
+        app_id: ${{ secrets.FIREBASE_APP_ID }}
+        firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+        file_path: app/build/outputs/apk/release/app-release.apk
