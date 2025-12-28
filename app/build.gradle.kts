@@ -1,3 +1,6 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -14,8 +17,8 @@ android {
         applicationId = "com.freelanxer.formularacing"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = generateVersionCode()
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,6 +55,12 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+fun generateVersionCode(): Int {
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofPattern("yyyyMMddHH")
+    return current.format(formatter).toInt()
 }
 
 dependencies {
