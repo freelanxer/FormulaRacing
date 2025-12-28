@@ -38,9 +38,16 @@ jobs:
     - name: Assemble Release APK
       run: ./gradlew assembleRelease
 
-    - name: Upload to Firebase App Distribution
-      uses: codewithshihab/firebase-app-distribution-action@v1.4.0
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
       with:
-        app_id: ${{ secrets.FIREBASE_APP_ID }}
-        firebase_token: ${{ secrets.FIREBASE_TOKEN }}
-        file_path: app/build/outputs/apk/release/app-release.apk
+        node-version: '20'
+
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+
+    - name: Upload to Firebase App Distribution
+      run: |
+        firebase appdistribution:distribute app/build/outputs/apk/release/app-release.apk \
+          --app "${{ secrets.FIREBASE_APP_ID }}" \
+          --token "${{ secrets.FIREBASE_TOKEN }}"
